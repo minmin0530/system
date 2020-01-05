@@ -3,6 +3,11 @@
 $params = explode('/', $_GET['url']);
 session_start();
 
+if ($params[0] == '') {
+    include ('./main/index.html');
+    exit;
+}
+
 if ($params[0] == 'select') {
     if (!isset($_SESSION['acc'])) {
         include ('./main/login.html');

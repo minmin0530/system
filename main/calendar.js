@@ -6,7 +6,10 @@ var today = 0;
 function send() {
 
     var prm = new URLSearchParams();
-    prm.append("name","world");
+    prm.append("name", document.getElementById('name').value );
+    prm.append("date", document.getElementById('date').value );
+    prm.append("email", document.getElementById('email').value );
+    prm.append("tel", document.getElementById('tel').value );
 
     var req = new Request('./main/Reserv.php',{
         method : "POST",
@@ -15,14 +18,31 @@ function send() {
 
     fetch(req).then(function(response){
         if (response.ok) {
-            console.log(response.url); //レスポンスのURL
-            console.log(response.status); //レスポンスのHTTPステータスコード
+            response.text().then(function(text){
+                result(text);
+            });
         }
     });
 
 
 }
-    
+
+function toppage() {
+    location.href = "reserv";
+}
+
+function result(text) {
+    const article = document.getElementsByTagName("article")[0];
+    article.style.width = "90%";
+    article.style.height = "1000px";
+    article.style.background = "#eeeeee";
+
+    const send = "<button onclick='toppage();'>戻る</button>";
+
+    article.innerHTML = "<div><span>" + text + "</span>" + send + "</div>";
+};
+
+
 
 function back() {
     const date = new Date();
