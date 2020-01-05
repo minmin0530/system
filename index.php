@@ -1,36 +1,43 @@
 <?php
 
 $params = explode('/', $_GET['url']);
+session_start();
 
-if ($params[0] == 'home') {
-    include ('./main/Admin.php');
-    new Admin();
-}
-
-$pdo = null;
-try {
- 
-    // データベースに接続
-    $pdo = new PDO(
-        'mysql:dbname=ar7;host=localhost;charset=utf8',
-        'root',
-        'root',
-        [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-        ]
-    );
- 
-} catch (PDOException $e) {
- 
-    /* エラー時は、とりあえず、エラーメッセージを表示 */
-    header('Content-Type: text/plain; charset=UTF-8', true, 500);
-    exit($e->getMessage());
-}
-
-$stmt = $pdo->query("SELECT * FROM page_tbl");// ORDER BY no ASC");
-while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
-    if ($params[0] == $row["permalink"]) {
-        include ('./pages/'. $row["name"]);
-
+if ($params[0] == 'select') {
+    if (!isset($_SESSION['acc'])) {
+        include ('./main/login.html');
+    } else {
+        include ('./main/select.html');
     }
 }
+
+if ($params[0] == 'home') {
+    if (!isset($_SESSION['acc'])) {
+        include ('./main/login.html');
+    } else {
+        include ('./main/Admin.php');
+        new Admin();
+    }
+}
+
+if ($params[0] == 'reserv') {
+    if (!isset($_SESSION['acc'])) {
+        include ('./main/login.html');
+    } else {
+        include ('./main/reserv.html');
+        new Admin();
+    }
+}
+
+
+if ($params[0] == 'login') {
+    include ('./main/login.html');
+}
+
+if ($params[0] == 'signup') {
+    include ('./main/signup.html');
+}
+
+include ("./main/DataBase.php");
+$db = new DataBase();
+$db->selectPage($params[0]);

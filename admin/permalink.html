@@ -8,67 +8,25 @@
         <header>header</header>
         <article>article</article>
         <script>
-            /*
-      function ajax() {
-document.getElementById('push').innerHTML = "押したよ！";
-
-var xhr = new XMLHttpRequest();
-
-// ハンドラの登録.
-xhr.onreadystatechange = function() {
-    switch ( xhr.readyState ) {
-        case 0:
-            // 未初期化状態.
-            console.log( 'uninitialized!' );
-            break;
-        case 1: // データ送信中.
-            console.log( 'loading...' );
-            break;
-        case 2: // 応答待ち.
-            console.log( 'loaded.' );
-            break;
-        case 3: // データ受信中.
-            console.log( 'interactive... '+xhr.responseText.length+' bytes.' );
-            break;
-        case 4: // データ受信完了.
-            if( xhr.status == 200 || xhr.status == 304 ) {
-                var data = xhr.responseText; // responseXML もあり
-                console.log( 'COMPLETE! :'+data );
-            } else {
-                console.log( 'Failed. HttpStatus: '+xhr.statusText );
-            }
-            break;
-    }
-};
-
-xhr.open( 'POST', './admin/permalink.php', false );
-xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
-
-xhr.send("permalink=" + encodeURIComponent(document.fm.permalink.value) + "&" + "title=" + encodeURIComponent(document.fm.title.value) + "&" + "content=" + encodeURIComponent(document.fm.content.value));
-xhr.abort();
-}
-*/
-
 function ajax() {
+    document.getElementById('push').innerHTML = "押したよ！";
 
-document.getElementById('push').innerHTML = "押したよ！";
+    var prm = new URLSearchParams();
+    prm.append("permalink",document.fm.permalink.value);
+    prm.append("title",document.fm.title.value);
+    prm.append("content",document.fm.content.value);
 
-var prm = new URLSearchParams();
-prm.append("permalink",document.fm.permalink.value);
-prm.append("title",document.fm.title.value);
-prm.append("content",document.fm.content.value);
+    var req = new Request('./admin/permalink.php',{
+        method : "POST",
+        body : prm
+    });
 
-var req = new Request('./admin/permalink.php',{
-    method : "POST",
-    body : prm
-});
-
-fetch(req).then(function(response){
-    if (response.ok) {
-        console.log(response.url); //レスポンスのURL
-        console.log(response.status); //レスポンスのHTTPステータスコード
-    }
-});
+    fetch(req).then(function(response){
+        if (response.ok) {
+            console.log(response.url); //レスポンスのURL
+            console.log(response.status); //レスポンスのHTTPステータスコード
+        }
+    });
 }
         </script>
         <form name="fm">

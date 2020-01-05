@@ -1,0 +1,81 @@
+<?php
+class DataBase {
+    private $pdo = null;
+    function __construct() {
+        try {
+            // データベースに接続
+            $this->pdo = new PDO(
+                'mysql:dbname=ar7;host=localhost;charset=utf8',
+                'root',
+                'root',
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+                ]
+            );
+        } catch (PDOException $e) {
+         
+            /* エラー時は、とりあえず、エラーメッセージを表示 */
+            header('Content-Type: text/plain; charset=UTF-8', true, 500);
+            exit($e->getMessage());
+        }
+    }
+
+    public function createPageTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS `page_tbl`"
+        ."("
+        . "`id` INT auto_increment primary key,"
+        . "`name` TEXT,"
+        . "`permalink` TEXT"
+        .");";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function createUserTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS `user_tbl`"
+        ."("
+        . "`id` INT auto_increment primary key,"
+        . "`name` TEXT,"
+        . "`password` TEXT"
+        .");";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+    }
+
+    public function insertPage($name, $permalink) {
+        $stmt = $this->pdo->prepare("INSERT INTO page_tbl (permalink, name) VALUES (:permalink, :name)");
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':permalink', $permalink, PDO::PARAM_STR);
+        
+        $stmt->execute();
+    }
+
+    public function insertUser($name, $password) {
+        $stmt = $this->pdo->prepare("INSERT INTO user_tbl (password, name) VALUES (:password, :name)");
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        
+        $stmt->execute();
+    }
+
+    public function selectPage($page) {
+        $stmt = $this->pdo->query("SELECT * FROM page_tbl");
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+            if ($page == $row["permalink"]) {
+                include ('./pages/'. $row["name"]);        
+            }
+        }        
+    }
+
+    public function selectUser($account, $password) {
+        $stmt = $this->pdo->query("SELECT * FROM user_tbl WHERE name = '".$account."'");
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+            if (password_verify($password, $row["password"])) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
