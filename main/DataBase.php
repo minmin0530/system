@@ -44,6 +44,21 @@ class DataBase {
         $stmt->execute();
     }
 
+    public function createReservTable() {
+        $sql = "CREATE TABLE IF NOT EXISTS `reserv_tbl`"
+        ."("
+        . "`id` INT auto_increment primary key,"
+        . "`name` TEXT,"
+        . "`date` DATE,"
+        . "`tel` TEXT,"
+        . "`email` TEXT"
+        .");";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+    }
+
+
     public function insertPage($name, $permalink) {
         $stmt = $this->pdo->prepare("INSERT INTO page_tbl (permalink, name) VALUES (:permalink, :name)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
@@ -56,6 +71,16 @@ class DataBase {
         $stmt = $this->pdo->prepare("INSERT INTO user_tbl (password, name) VALUES (:password, :name)");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+        
+        $stmt->execute();
+    }
+
+    public function insertReserv($name, $date, $email, $tel) {
+        $stmt = $this->pdo->prepare("INSERT INTO reserv_tbl (tel, email, date, name) VALUES (:tel, :email, :date, :name)");
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':tel', $tel, PDO::PARAM_STR);
+        $stmt->bindParam(':date', $date, PDO::PARAM_STR);
         
         $stmt->execute();
     }
@@ -78,4 +103,12 @@ class DataBase {
         }
         return false;
     }
+
+    public function selectReserv() {
+        $stmt = $this->pdo->query("SELECT * FROM reserv_tbl ORDER BY date");
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+            echo $row["name"]." ".$row["date"]." ".$row["tel"]." ".$row["email"]."<br>";
+        }
+    }
+
 }

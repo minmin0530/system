@@ -9,7 +9,7 @@ if ($params[0] == '') {
 }
 
 if ($params[0] == 'select') {
-    if (!isset($_SESSION['acc'])) {
+    if (!isset($_SESSION['account'])) {
         include ('./main/login.html');
     } else {
         include ('./main/select.html');
@@ -17,7 +17,7 @@ if ($params[0] == 'select') {
 }
 
 if ($params[0] == 'home') {
-    if (!isset($_SESSION['acc'])) {
+    if (!isset($_SESSION['account'])) {
         include ('./main/login.html');
     } else {
         include ('./main/Admin.php');
@@ -26,12 +26,16 @@ if ($params[0] == 'home') {
 }
 
 if ($params[0] == 'reserv') {
-    if (!isset($_SESSION['acc'])) {
+    if (!isset($_SESSION['account'])) {
         include ('./main/login.html');
     } else {
         include ('./main/reserv.html');
         new Admin();
     }
+}
+
+if ($params[0] == 'reservlist') {
+    include ('./main/ReservList.php');
 }
 
 
