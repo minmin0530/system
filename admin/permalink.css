@@ -1,0 +1,27 @@
+body {
+    margin: 0;
+}
+header {
+    width: 100%;
+    font-size: 2em;
+    font-weight: bold;
+    background: black;
+    color: white;
+    padding: 10px;
+}
+
+article {
+    width: 100%;
+    display: flex;
+}
+
+aside {
+    background: black;
+    color: white;
+    width: 200px;
+    height: 700px;
+}
+
+.sidemenu {
+    padding: 10px;
+}

@@ -2,7 +2,7 @@
 
 class Admin {
     function __construct() {
-
+/*
         echo '<script>function visible(i){';
         echo ' if (document.getElementsByClassName("button")[i].innerHTML == "閉じる") {';
         echo 'document.getElementsByClassName("hidden")[i].style.display = "none";';
@@ -28,9 +28,9 @@ class Admin {
             echo '</span>';
             $i += 1;
         }
-
-        echo "<h1>管理画面</h1>";
-        echo "<h2>記事作成</h2>";
+*/
+        // echo "<h1>管理画面</h1>";
+        // echo "<h2>記事作成</h2>";
  
 //        include('./admin/editor.html');
 //        include('./admin/createDirectory.html');
