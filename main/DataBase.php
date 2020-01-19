@@ -24,7 +24,8 @@ class DataBase {
         $sql = "CREATE TABLE IF NOT EXISTS `page_tbl`"
         ."("
         . "`id` INT auto_increment primary key,"
-        . "`name` TEXT,"
+        . "`title` TEXT,"
+        . "`filename` TEXT,"
         . "`permalink` TEXT"
         .");";
 
@@ -59,9 +60,10 @@ class DataBase {
     }
 
 
-    public function insertPage($name, $permalink) {
-        $stmt = $this->pdo->prepare("INSERT INTO page_tbl (permalink, name) VALUES (:permalink, :name)");
-        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+    public function insertPage($title, $filename1, $permalink) {
+        $stmt = $this->pdo->prepare("INSERT INTO page_tbl (permalink, filename1, title) VALUES (:permalink, :filename1, :title)");
+        $stmt->bindParam(':title', $title, PDO::PARAM_STR);
+        $stmt->bindParam(':filename1', $filename1, PDO::PARAM_STR);
         $stmt->bindParam(':permalink', $permalink, PDO::PARAM_STR);
         
         $stmt->execute();
@@ -85,11 +87,20 @@ class DataBase {
         $stmt->execute();
     }
 
+    public function selectTitle($page) {
+        $stmt = $this->pdo->query("SELECT * FROM page_tbl");
+        while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
+            if ($page == $row["permalink"]) {
+                return $row["title"];
+            }
+        }        
+    }
+
     public function selectPage($page) {
         $stmt = $this->pdo->query("SELECT * FROM page_tbl");
         while($row = $stmt -> fetch(PDO::FETCH_ASSOC)) {
             if ($page == $row["permalink"]) {
-                include ('./pages/'. $row["name"]);        
+                include ('./pages/'. $row["filename"]);        
             }
         }        
     }

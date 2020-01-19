@@ -18,12 +18,11 @@
             </aside>
         <script>
 function ajax() {
-    document.getElementById('push').innerHTML = "押したよ！";
-
     var prm = new URLSearchParams();
     prm.append("permalink",document.fm.permalink.value);
-    prm.append("title",document.fm.title.value);
-    prm.append("content",document.fm.content.value);
+    prm.append("filename" ,document.fm.filename.value);
+    prm.append("title"    ,document.fm.title.value);
+    prm.append("content"  ,document.fm.content.value);
 
     var req = new Request('./admin/permalink.php',{
         method : "POST",
@@ -40,11 +39,11 @@ function ajax() {
         </script>
             <form name="fm">
                 <span>パーマリンク</span><input type="text" name="permalink">
-                <span>ファイル名</span><input type="text" name="title">
-                <p>編集</p>
+                <span>ファイル名</span><input type="text" name="filename">
+                <span>タイトル</span><input typw="text" name="title">
+                <br>
                 <textarea name="content" cols="200" rows="40"></textarea>
                 <button onclick="ajax();">登録</button>
-                <div id="push"></div>
             </form>
         </article>
     </body>
