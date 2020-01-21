@@ -25,3 +25,7 @@ aside {
 .sidemenu {
     padding: 10px;
 }
+
+#change_frame {
+    width: 100%;
+}

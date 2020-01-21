@@ -9,14 +9,29 @@
         <header>管理画面</header>
         <article>
             <aside>
-                <div class="sidemenu">記事一覧</div>
-                <div class="sidemenu">記事作成</div>
-                <div class="sidemenu">画像一覧</div>
-                <div class="sidemenu">画像アップロード</div>
-                <div class="sidemenu">プレビュー</div>
-                <div class="sidemenu">設定</div>
+                <div class="sidemenu" id="article_list">記事一覧</div>
+                <div class="sidemenu" id="article_create">記事作成</div>
+                <div class="sidemenu" id="image_list">画像一覧</div>
+                <div class="sidemenu" id="image_upload">画像アップロード</div>
+                <div class="sidemenu" id="preview">プレビュー</div>
+                <div class="sidemenu" id="config">設定</div>
             </aside>
         <script>
+window.onload = function() {
+    const frame = document.getElementById("change_frame");
+    const article_list = document.getElementById("article_list");
+    const article_create = document.getElementById("article_create");
+
+    article_list.addEventListener("click", function(){
+        frame.src = "./admin/article_list.html";
+    }, false);
+
+    article_create.addEventListener("click", function(){
+        frame.src = "./admin/article_create.html";
+    }, false);
+
+}
+            
 function ajax() {
     var prm = new URLSearchParams();
     prm.append("permalink",document.fm.permalink.value);
@@ -37,14 +52,7 @@ function ajax() {
     });
 }
         </script>
-            <form name="fm">
-                <span>パーマリンク</span><input type="text" name="permalink">
-                <span>ファイル名</span><input type="text" name="filename">
-                <span>タイトル</span><input typw="text" name="title">
-                <br>
-                <textarea name="content" cols="200" rows="40"></textarea>
-                <button onclick="ajax();">登録</button>
-            </form>
+        <iframe id="change_frame" src="./admin/article_create.html"></iframe>
         </article>
     </body>
 </html>
